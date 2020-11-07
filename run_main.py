@@ -10,7 +10,7 @@ import src.config as sc
 
 from sklearn import metrics
 from src.model_dispatcher import model
-
+from src.param_grid import parameter_grid
 
 def run_output(df):
     """
