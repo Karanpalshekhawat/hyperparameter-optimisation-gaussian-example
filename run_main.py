@@ -8,9 +8,11 @@ import joblib
 import pandas as pd
 import src.config as sc
 
+from sklearn import model_selection
 from sklearn import metrics
 from src.model_dispatcher import model
 from src.param_grid import parameter_grid
+
 
 def run_output(df):
     """
@@ -27,20 +29,19 @@ def run_output(df):
     X = df[features].values
     y = df['price_range'].values
 
-    clf = model
+    clf = model_selection.GridSearchCV(
+        estimator=model,
+        param_grid=parameter_grid,
+        scoring='accuracy',
+        verbose=10,  # higher value of it just means that lot of information will be printed
+        n_jobs=1,
+        cv=5
+    )
 
     """fit model on the training data"""
-    clf.fit(x_train, y_train)
+    clf.fit(X, y)
 
-    """As target variable is skewed we will need predicted probabilities to calculate AUC score"""
-    y_pred = clf.predict_proba(x_valid)[:,1]
-
-    """find accuracy as distribution of all target variables in similar"""
-    auc = metrics.roc_auc_score(y_valid, y_pred)
-    print(f"Fold number :{fold}, AUC score : {auc}")
-
-    """Save Model"""
-    joblib.dump(clf, os.path.join(sc.OUTPUT_FILE, f'dt_{fold}.bin'))
+    return clf
 
 
 if __name__ == '__main__':
