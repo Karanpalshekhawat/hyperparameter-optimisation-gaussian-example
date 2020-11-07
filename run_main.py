@@ -5,7 +5,6 @@ scripts to run the ml project.
 
 import os
 import joblib
-import argparse
 import pandas as pd
 import src.config as sc
 
@@ -15,13 +14,12 @@ from src.model_dispatcher import model
 from src.data_update import fill_na_with_none, one_hot_encoding
 
 
-def run_output(fold, df):
+def run_output(df):
     """
     Structure, train and save the model
     for given fold number.
 
     Args:
-        fold (int): number for fold
         df (pd.DataFrame): training dataset
 
     Returns:
@@ -57,18 +55,6 @@ def run_output(fold, df):
 
 if __name__ == '__main__':
     df = create_folds_using_kfold()
-    """Create a parser object and add variables that you want to declare"""
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--fold', type=int)
-    args = parser.parse_args()
-    """We have used LR as a model but we can also use Random forest tree.
-        For that we can use label encoding instead of one hot encoding
-        and You will observe that RF without tuning of hyper parameters 
-        performs a lot worse the simple LR. So it is better to always 
-        start with the simple model. Other parameters that might influence 
-        model decision is time taken in computation. RF takes much longer time.
-        Even on sparse one hot encoded data, RF will take more time.
-        Also better choice is to use label encoding for tree based algorithms even 
-        XG boost or other similar gradient boosting algorithms
-        """
-    run_output(args.fold, df)
+
+
+    run_output(df)
