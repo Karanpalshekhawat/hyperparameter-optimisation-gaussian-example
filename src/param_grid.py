@@ -5,7 +5,7 @@ grid for different hyper parameters
 import numpy as np
 
 parameter_grid = {
-    'n_estimators': np.arange(100, 1500, 100),
-    'max_depth': np.arange(1, 31),
+    'n_estimators': [100, 200, 300, 400, 500],
+    'max_depth': [1, 2, 5, 7, 11, 15],
     'criterion': ['gini', 'entropy']
 }

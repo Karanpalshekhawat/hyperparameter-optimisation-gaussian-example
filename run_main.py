@@ -3,13 +3,10 @@ This script is the main file that calls all the other
 scripts to run the ml project.
 """
 
-import os
-import joblib
 import pandas as pd
 import src.config as sc
 
 from sklearn import model_selection
-from sklearn import metrics
 from src.model_dispatcher import model
 from src.param_grid import parameter_grid
 
@@ -40,6 +37,9 @@ def run_output(df):
 
     """fit model on the training data"""
     clf.fit(X, y)
+
+    print(clf.best_score_)
+    print(clf.best_estimator_.get_params())
 
     return clf
 
