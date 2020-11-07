@@ -26,6 +26,15 @@ def run_output(df):
     X = df[features].values
     y = df['price_range'].values
 
+    """
+    We can also use RandomizedSearchCV, 
+    where we randomly select a combination
+    of parameters and run cross validation,
+    time consumed will be less than grid search
+    as we do not train on all combinations, one more
+    parameter in it is n_iter, if it is less it will take less
+    time than grid searrch if it is high, it will take more time
+    """
     clf = model_selection.GridSearchCV(
         estimator=model,
         param_grid=parameter_grid,
@@ -38,8 +47,11 @@ def run_output(df):
     """fit model on the training data"""
     clf.fit(X, y)
 
-    print(clf.best_score_)
-    print(clf.best_estimator_.get_params())
+    print(f'Best score is : {clf.best_score_}')
+    best_parameters = clf.best_estimator_.get_params()
+    print('Best Parameters Set:')
+    for prm in parameter_grid.keys():
+        print(f'\t {prm} : {best_parameters[prm]}')
 
     return clf
 
