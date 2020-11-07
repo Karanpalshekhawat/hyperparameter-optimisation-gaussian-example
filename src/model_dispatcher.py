@@ -2,6 +2,6 @@
 This script defines the model used for calculation
 """
 
-from sklearn import linear_model
+from sklearn.ensemble import RandomForestClassifier
 
-model = linear_model.LogisticRegression()
+model = RandomForestClassifier(n_jobs=1)

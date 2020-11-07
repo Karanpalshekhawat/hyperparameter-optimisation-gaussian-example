@@ -9,9 +9,7 @@ import pandas as pd
 import src.config as sc
 
 from sklearn import metrics
-from src.create_folds import create_folds_using_kfold
 from src.model_dispatcher import model
-from src.data_update import fill_na_with_none, one_hot_encoding
 
 
 def run_output(df):
@@ -25,18 +23,10 @@ def run_output(df):
     Returns:
 
     """
-    df_new = fill_na_with_none(df)
-    df_train = df_new[df_new['kfold'] != fold].reset_index(drop=True)
-    df_valid = df_new[df_new['kfold'] == fold].reset_index(drop=True)
+    features = [i for i in df.columns if i != 'price_range']
+    X = df[features].values
+    y = df['price_range'].values
 
-    """Apply one hot encoding to feature matrix"""
-    x_train, x_valid = one_hot_encoding(df_train, df_valid)
-
-    """Convert training and validation dataframe target to numpy values for AUC calculation"""
-    y_train = df_train['target'].values
-    y_valid = df_valid['target'].values
-
-    """import the model required"""
     clf = model
 
     """fit model on the training data"""
@@ -54,7 +44,5 @@ def run_output(df):
 
 
 if __name__ == '__main__':
-    df = create_folds_using_kfold()
-
-
+    df = pd.read_csv(sc.TRAINING_FILE)
     run_output(df)
