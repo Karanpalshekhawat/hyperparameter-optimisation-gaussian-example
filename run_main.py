@@ -56,7 +56,7 @@ if __name__ == '__main__':
     """
     One very important thing is that we are trying to minimise something 
     but we cannot minimise accuracy as we should maximise it, so we multiply
-    accuracy by -1 and then minimise it. This was we are minimising accuracy
+    accuracy by -1 and then minimise it. This way we are minimising accuracy
     but in fact we are maximising accuracy.
     """
     run_output(df)
