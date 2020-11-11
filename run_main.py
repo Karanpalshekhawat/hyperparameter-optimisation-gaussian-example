@@ -27,6 +27,12 @@ def run_output(df):
     y = df['price_range'].values
 
     """
+    Create a parameter space using scikit-optimize library (skopt)
+    """
+
+
+
+    """
     We can also use RandomizedSearchCV, 
     where we randomly select a combination
     of parameters and run cross validation,
