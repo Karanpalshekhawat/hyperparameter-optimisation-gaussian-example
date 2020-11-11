@@ -1,6 +1,7 @@
 """
 This script just define the parameter space
 grid for different hyper parameters
+Create a parameter space using scikit-optimize library (skopt)
 """
 from skopt import space
 

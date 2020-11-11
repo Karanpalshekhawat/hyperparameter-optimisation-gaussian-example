@@ -6,9 +6,10 @@ scripts to run the ml project.
 import pandas as pd
 import src.config as sc
 
-from sklearn import model_selection
-from src.model_dispatcher import model
-from src.param_grid import parameter_grid
+from functools import partial
+from skopt import gp_minimize
+from src.param_grid import param_space, param_names
+from src.optimize import opt_func
 
 
 def run_output(df):
@@ -26,29 +27,12 @@ def run_output(df):
     X = df[features].values
     y = df['price_range'].values
 
-    """
-    Create a parameter space using scikit-optimize library (skopt)
-    """
+    optimization_function = partial(opt_func, param_names=param_names, x=X, y=y)
 
-    clf = model_selection.GridSearchCV(
-        estimator=model,
-        param_grid=parameter_grid,
-        scoring='accuracy',
-        verbose=10,  # higher value of it just means that lot of information will be printed
-        n_jobs=1,
-        cv=5
-    )
+    result = gp_minimize(optimization_function, dimensions=param_space, n_calls=15, n_random_starts=10, verbose=10)
+    best_parameters = dict(zip(param_names, result.x))
 
-    """fit model on the training data"""
-    clf.fit(X, y)
-
-    print(f'Best score is : {clf.best_score_}')
-    best_parameters = clf.best_estimator_.get_params()
-    print('Best Parameters Set:')
-    for prm in parameter_grid.keys():
-        print(f'\t {prm} : {best_parameters[prm]}')
-
-    return clf
+    return
 
 
 if __name__ == '__main__':
@@ -59,4 +43,4 @@ if __name__ == '__main__':
     accuracy by -1 and then minimise it. This way we are minimising accuracy
     but in fact we are maximising accuracy.
     """
-    run_output(df)
+    print(run_output(df))
