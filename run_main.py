@@ -30,17 +30,6 @@ def run_output(df):
     Create a parameter space using scikit-optimize library (skopt)
     """
 
-
-
-    """
-    We can also use RandomizedSearchCV, 
-    where we randomly select a combination
-    of parameters and run cross validation,
-    time consumed will be less than grid search
-    as we do not train on all combinations, one more
-    parameter in it is n_iter, if it is less it will take less
-    time than grid searrch if it is high, it will take more time
-    """
     clf = model_selection.GridSearchCV(
         estimator=model,
         param_grid=parameter_grid,
@@ -64,4 +53,10 @@ def run_output(df):
 
 if __name__ == '__main__':
     df = pd.read_csv(sc.TRAINING_FILE)
+    """
+    One very important thing is that we are trying to minimise something 
+    but we cannot minimise accuracy as we should maximise it, so we multiply
+    accuracy by -1 and then minimise it. This was we are minimising accuracy
+    but in fact we are maximising accuracy.
+    """
     run_output(df)
